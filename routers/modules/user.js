@@ -44,6 +44,7 @@ Router.get('/uinfo', async (request, response) => {
         }
         response.send(info);
     } catch (err) {
+        console.log(err);
         info = {
             code: err.errno,
             msg: err.sqlMessage,
@@ -57,28 +58,29 @@ Router.get('/uinfo', async (request, response) => {
 //  获取用户数据    动态路由
 Router.get('/uinfo/:uid', async (request, response) => {
     console.log('<----------个人页---------->');
-    console.log('url=', request.url);
-    console.log('path=', request.path);
-    console.log('method=', request.method);
-    // 接收http://localhost:2020/user/uinfo/:uid 里的uid
-    console.log('params=', request.params);//结果为一个对象
-    // 接收http://localhost:2020/user/uinfo?uid=czj&psw=123 里的key=value
-    console.log('query=', request.query);//结果为一个对象
-    console.log('body=', request.body);
+    console.log('url=', request.url);       //请求地址
+    console.log('path=', request.path);     //请求地址
+    console.log('method=', request.method); //请求方式
+    console.log('params=', request.params); //结果为一个对象
+    console.log('query=', request.query);   //结果为一个对象
+    console.log('body=', request.body);     //请求体
 
+    // console.log(request);
 
     // 数据库处理
-    let sql = `SELECT * FROM shopcarinfo`;
+    // let sql = `SELECT * FROM user WHERE id = ${request.params.uid}`;
+    let sql = `SELECT * FROM user`;
     let info = {};
     try {
         let prms = await query(sql);
         if (prms.length > 0) {
             info = {
                 code: 2000,
-                text: "成功",
+                text: "操作执行成功",
                 flag: true,
-                params: request.body
+                params: prms
             }
+            console.log(prms);
         }
         response.send(info);
     } catch (err) {
@@ -86,79 +88,17 @@ Router.get('/uinfo/:uid', async (request, response) => {
             code: 3000,
             text: "失败",
             flag: false,
-            params: request.body
+            params: prms
         }
         response.send(info)
     }
+    // response.send(info)
 })
 
-// 修改用户数据
-Router.put('/uinfo', async (request, response) => {
-    console.log('<----------个人页---------->');
-    console.log('url=', request.url);
-    console.log('path=', request.path);
-    console.log('method=', request.method);
-    console.log('params=', request.params);
-    console.log('query=', request.query);
-    console.log('body=', request.body);
+// 修改用户数据 put
 
-    let sql = ``;
-    let info = {};
-    try {
-        let prms = await query(sql);
-        if (prms.length > 0) {
-            info = {
-                code: 2000,
-                text: "成功",
-                flag: true,
-                params: request.body
-            }
-        }
-        response.send(info);
-    } catch (err) {
-        info = {
-            code: 3000,
-            text: "失败",
-            flag: false,
-            params: request.body
-        }
-        response.send(info)
-    }
-})
+// 注册 post
 
-// 注册
-Router.post('/reg', (request, response) => {
-    console.log('<----------注册页---------->');
-    console.log('url=', request.url);
-    console.log('path=', request.path);
-    console.log('method=', request.method);
-    console.log('params=', request.params);
-    console.log('query=', request.query);
-    console.log('body=', request.body);
-    let info = {
-        code: 2000,
-        text: "成功",
-        flag: true,
-        params: request.body
-    }
-    response.send(info);
-})
-// 登录
-Router.post('/login', (request, response) => {
-    console.log('<----------登录页---------->');
-    console.log('url=', request.url);
-    console.log('path=', request.path);
-    console.log('method=', request.method);
-    console.log('params=', request.params);
-    console.log('query=', request.query);
-    console.log('body=', request.body);
-    let info = {
-        code: 2000,
-        text: "成功",
-        flag: true,
-        params: request.body
-    }
-    response.send(info);
-})
+// 登录 post
 
 module.exports = Router;
