@@ -14,7 +14,7 @@ const express = require('express');
 const Router = express.Router();
 
 // 引入封装的数据库
-const query = require('../../databaseApi/mySQL/dbLink');
+const query = require('../../databaseApi/MySQL/dbLink');
 
 // 注册前验证用户名
 Router.get('/uinfo', async (request, response) => {
