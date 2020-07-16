@@ -5,7 +5,6 @@
             注册
             登录
             修改个人信息
-            
 */
 
 // 引入
@@ -22,8 +21,8 @@ Router.get('/uinfo', async (request, response) => {
     console.log('url=', request.url);
     console.log('path=', request.path);
     console.log('method=', request.method);
-    console.log('params=', request.params);//结果为一个对象
-    console.log('query=', request.query);//结果为一个对象
+    console.log('params=', request.params);//结果为一个对象从地址栏获取
+    console.log('query=', request.query);//结果为一个对象从body里获取
     console.log('body=', request.body);
 
 
