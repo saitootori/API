@@ -10,9 +10,12 @@ const query = require('../../databaseApi/MySQL/dbLink');
 // 设置中间件   需要在子路由里单独设置
 Router.use(express.urlencoded());
 
+let api;
+
 // 添加商品信息
 Router.post('/goodinfo', async (req, res) => {
-    console.log('<----------添加商品接口---------->');
+    api = '添加商品接口'
+    console.log(`<----------${api}---------->`);
     console.log('good_info', { ...req.body });
 
     // 数据库处理
@@ -38,7 +41,7 @@ Router.post('/goodinfo', async (req, res) => {
         let result = await query(sql);//[{},{}]
 
         info = {
-            api: '添加商品接口',
+            api,
             code: 2000,
             msg: '数据库操作成功',
             flag: true,
@@ -48,7 +51,7 @@ Router.post('/goodinfo', async (req, res) => {
     } catch (err) {
         console.log(err);
         info = {
-            api: '添加商品接口',
+            api,
             code: err.errno,
             msg: '操作失败：' + err.sqlMessage,
             flag: false
@@ -58,30 +61,31 @@ Router.post('/goodinfo', async (req, res) => {
 })
 
 // 查询指定商品详情信息
-Router.get('/uinfo/personal/:good_id', async (req, res) => {
-    console.log('<----------查询单个商品接口---------->');
+Router.get('/goodinfo/:good_id', async (req, res) => {
+    api = '查询单个商品接口'
+    console.log(`<----------${api}---------->`);
 
     let info = {};
 
-    let uid;
-    if (req.params.user_id) {
-        uid = req.params.user_id
-    } else if (req.body.user_id) {
-        uid = req.body.user_id
+    let gid;
+    if (req.params.good_id) {
+        gid = req.params.good_id
+    } else if (req.body.good_id) {
+        gid = req.body.good_id
     } else {
 
     }
 
     // 数据库处理
-    let sql = `SELECT * FROM goodsinfo WHERE user_id = ${uid}`;
+    let sql = `SELECT * FROM goodsinfo WHERE good_id = ${gid}`;
 
     try {
         let prms = await query(sql);
         if (prms.length > 0) {
             info = {
-                api: '查询单个商品接口',
+                api,
                 code: 2000,
-                text: "操作执行成功",
+                msg: "操作执行成功",
                 flag: true,
                 result: prms
             }
@@ -90,9 +94,9 @@ Router.get('/uinfo/personal/:good_id', async (req, res) => {
         res.send(info);
     } catch (err) {
         info = {
-            api: '查询单个商品接口',
+            api,
             code: err.errno,
-            text: '操作失败：' + err.sqlMessage,
+            msg: '操作失败：' + err.sqlMessage,
             flag: false
         }
         res.send(info)

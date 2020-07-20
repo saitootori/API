@@ -18,9 +18,13 @@ Router.use(express.urlencoded());
 // 引入封装的数据库
 const query = require('../../databaseApi/MySQL/dbLink');
 
+
+let api;
+
 // 注册前验证用户名     user_name
 Router.get('/uinfo/regcheck/:user_name', async (req, res) => {
-    console.log('<----------验证用户名接口---------->');
+    api = '验证用户名接口'
+    console.log(`<----------${api}---------->`);
     // console.log('url=', req.url);
     // console.log('path=', req.path);
     // console.log('method=', req.method);
@@ -58,7 +62,7 @@ Router.get('/uinfo/regcheck/:user_name', async (req, res) => {
 
             console.log(result);
             info = {
-                api: '用户注册验证接口',
+                api,
                 code: 2000,
                 msg: '数据库操作成功',
                 flag: true,
@@ -69,7 +73,7 @@ Router.get('/uinfo/regcheck/:user_name', async (req, res) => {
     } catch (err) {
         console.log(err);
         info = {
-            api: '用户注册验证接口',
+            api,
             code: err.errno,
             msg: '操作失败：' + err.sqlMessage,
             flag: false
@@ -80,7 +84,8 @@ Router.get('/uinfo/regcheck/:user_name', async (req, res) => {
 
 // 注册 post
 Router.post('/uinfo/reg', async (req, res) => {
-    console.log('<----------用户注册接口---------->');
+    api = '用户注册接口'
+    console.log(`<----------${api}---------->`);
     // console.log(req);
     // console.log('user_info=', { ...req.body });
 
@@ -94,7 +99,7 @@ Router.post('/uinfo/reg', async (req, res) => {
         let result = await query(sql);//[{},{}]
 
         info = {
-            api: '用户注册接口',
+            api,
             code: 2000,
             msg: '数据库操作成功',
             flag: true,
@@ -104,7 +109,7 @@ Router.post('/uinfo/reg', async (req, res) => {
     } catch (err) {
         console.log(err);
         info = {
-            api: '用户注册接口',
+            api,
             code: err.errno,
             msg: '操作失败：' + err.sqlMessage,
             flag: false
@@ -115,10 +120,11 @@ Router.post('/uinfo/reg', async (req, res) => {
 
 // 登录 post
 Router.post('/uinfo/login', async (req, res) => {
-    console.log('<----------用户登录接口---------->');
-    console.log(req);
-    console.log('user_name=', req.body.user_name);
-    console.log('user_psw=', req.body.user_psw);
+    api = '用户登录接口'
+    console.log(`<----------${api}---------->`);
+    // console.log(req);
+    // console.log('user_name=', req.body.user_name);
+    // console.log('user_psw=', req.body.user_psw);
 
     // 数据库处理
     let sql = `SELECT * FROM userinfo WHERE user_name = '${req.body.user_name}'`;
@@ -138,7 +144,7 @@ Router.post('/uinfo/login', async (req, res) => {
             }
         }
         info = {
-            api: '用户登录接口',
+            api,
             code: 2000,
             msg: '数据库操作成功',
             sqlOk: true,
@@ -148,7 +154,7 @@ Router.post('/uinfo/login', async (req, res) => {
     } catch (err) {
         console.log(err);
         info = {
-            api: '用户登录接口',
+            api,
             code: err.errno,
             msg: '操作失败：' + err.sqlMessage,
             flag: false
@@ -159,7 +165,8 @@ Router.post('/uinfo/login', async (req, res) => {
 
 //  获取用户数据
 Router.get('/uinfo/personal/:user_id', async (req, res) => {
-    console.log('<----------个人信息接口---------->');
+    api = '个人信息接口'
+    console.log(`<----------${api}---------->`);
 
     let info = {};
 
@@ -179,7 +186,7 @@ Router.get('/uinfo/personal/:user_id', async (req, res) => {
         let prms = await query(sql);
         if (prms.length > 0) {
             info = {
-                api: '个人中心接口',
+                api,
                 code: 2000,
                 text: "操作执行成功",
                 flag: true,
@@ -190,7 +197,7 @@ Router.get('/uinfo/personal/:user_id', async (req, res) => {
         res.send(info);
     } catch (err) {
         info = {
-            api: '个人中心接口',
+            api,
             code: err.errno,
             text: '操作失败：' + err.sqlMessage,
             flag: false
@@ -201,7 +208,8 @@ Router.get('/uinfo/personal/:user_id', async (req, res) => {
 
 // 修改用户数据 put
 Router.put('/uinfo/personal', async (req, res) => {
-    console.log('<----------修改信息接口---------->');
+    api = '修改信息接口'
+    console.log(`<----------${api}---------->`);
     // 数据库处理语句
     let sql = `UPDATE userinfo SET user_name = '${req.body.user_name}' WHERE user_id = ${req.body.user_id} ; `;
 
@@ -210,7 +218,7 @@ Router.put('/uinfo/personal', async (req, res) => {
         let info = {};
         if (prms) {
             info = {
-                api: '个人信息修改接口',
+                api,
                 code: 2000,
                 text: "操作执行成功",
                 flag: true,
@@ -220,7 +228,7 @@ Router.put('/uinfo/personal', async (req, res) => {
         }
     } catch (err) {
         info = {
-            api: '个人信息修改接口',
+            api,
             code: err.errno,
             text: '操作失败：' + err.sqlMessage,
             flag: false
@@ -228,7 +236,5 @@ Router.put('/uinfo/personal', async (req, res) => {
         res.send(info)
     }
 })
-
-
 
 module.exports = Router;
