@@ -24,13 +24,8 @@ let api;
 Router.get('/uinfo/regcheck/:user_name', async (req, res) => {
     api = '验证用户名接口'
     console.log(`<----------${api}---------->`);
-    // console.log('url=', req.url);
-    // console.log('path=', req.path);
-    // console.log('method=', req.method);
-    // console.log('params=', req.params); //结果为一个对象从地址栏获取
-    // console.log('query=', req.query);   //结果为一个对象从body里获取
-    // console.log('body=', req.body);
-
+    console.log('params=', req.params);
+    console.log('body=', req.body);
 
     // 数据库处理
     let sql = `SELECT * FROM userinfo`;
@@ -45,12 +40,12 @@ Router.get('/uinfo/regcheck/:user_name', async (req, res) => {
             let result = true;
             prms.forEach(item => {
                 if (req.params.user_name) {
-                    console.log(req.params.user_name, item.user_name);
+                    // console.log(req.params.user_name, item.user_name);
                     if (req.params.user_name == item.user_name) {
                         result = false
                     }
                 } else if (req.query.user_name) {
-                    console.log(req.params.user_name, item.user_name);
+                    // console.log(req.params.user_name, item.user_name);
                     if (req.params.user_name == item.user_name) {
                         result = false
                     }
@@ -59,7 +54,7 @@ Router.get('/uinfo/regcheck/:user_name', async (req, res) => {
                 }
             })
 
-            console.log(result);
+            // console.log(result);
             info = {
                 api,
                 code: 2000,
@@ -85,8 +80,8 @@ Router.get('/uinfo/regcheck/:user_name', async (req, res) => {
 Router.post('/uinfo/reg', async (req, res) => {
     api = '用户注册接口'
     console.log(`<----------${api}---------->`);
-    // console.log(req);
-    // console.log('user_info=', { ...req.body });
+    console.log('params=', req.params);
+    console.log('body=', req.body);
 
     // 数据库处理
 
@@ -106,7 +101,7 @@ Router.post('/uinfo/reg', async (req, res) => {
         }
         res.send(info);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         info = {
             api,
             code: err.errno,
@@ -121,9 +116,8 @@ Router.post('/uinfo/reg', async (req, res) => {
 Router.post('/uinfo/login', async (req, res) => {
     api = '用户登录接口'
     console.log(`<----------${api}---------->`);
-    // console.log(req);
-    // console.log('user_name=', req.body.user_name);
-    // console.log('user_psw=', req.body.user_psw);
+    console.log('params=', req.params);
+    console.log('body=', req.body);
 
     // 数据库处理
     let sql = `SELECT * FROM userinfo WHERE user_name = '${req.body.user_name}'`;
@@ -131,8 +125,8 @@ Router.post('/uinfo/login', async (req, res) => {
     let result = false;
     try {
         let prms = await query(sql);//[{},{}]
-        console.log(prms[0].user_name);
-        console.log(prms[0].user_psw);
+        // console.log(prms[0].user_name);
+        // console.log(prms[0].user_psw);
 
         // 判断数据库里有没有这个用户
         if (prms.length) {
@@ -151,7 +145,7 @@ Router.post('/uinfo/login', async (req, res) => {
         }
         res.send(info);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         info = {
             api,
             code: err.errno,
@@ -166,6 +160,8 @@ Router.post('/uinfo/login', async (req, res) => {
 Router.get('/uinfo/personal/:user_id', async (req, res) => {
     api = '个人信息接口'
     console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('body=', req.body);
 
     let info = {};
 
@@ -191,7 +187,7 @@ Router.get('/uinfo/personal/:user_id', async (req, res) => {
                 flag: true,
                 result: prms
             }
-            console.log(prms);
+            // console.log(prms);
         }
         res.send(info);
     } catch (err) {
@@ -209,6 +205,8 @@ Router.get('/uinfo/personal/:user_id', async (req, res) => {
 Router.put('/uinfo/personal', async (req, res) => {
     api = '修改信息接口'
     console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('body=', req.body);
     // 数据库处理语句
     let sql = `UPDATE userinfo SET user_name = '${req.body.user_name}' WHERE user_id = ${req.body.user_id} ; `;
 

@@ -16,7 +16,8 @@ let api;
 Router.post('/cartinfo', async (req, res) => {
     api = '购物车添加商品接口'
     console.log(`<----------${api}---------->`);
-    console.log('good_info', { ...req.body });
+    console.log('params=', req.params);
+    console.log('body=', req.body);
 
     // 数据库处理
     let sql = `INSERT INTO cartinfo 
@@ -27,8 +28,7 @@ Router.post('/cartinfo', async (req, res) => {
                     good_price,
                     good_img,
                     good_num,
-                    good_stock,
-                    good_discount) VALUES
+                    good_stock) VALUES
                 (${req.body.user_id},
                 ${req.body.good_id},
                 '${req.body.good_name}',
@@ -36,8 +36,7 @@ Router.post('/cartinfo', async (req, res) => {
                 ${req.body.good_price},
                 '${req.body.good_img}',
                 ${req.body.good_num},
-                ${req.body.good_stock},
-                ${req.body.good_discount});`;
+                ${req.body.good_stock});`;
     let info = {};
     try {
         let result = await query(sql);//[{},{}]
@@ -51,7 +50,7 @@ Router.post('/cartinfo', async (req, res) => {
         }
         res.send(info);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         info = {
             api,
             code: err.errno,
@@ -66,6 +65,8 @@ Router.post('/cartinfo', async (req, res) => {
 Router.get('/cartinfo/:user_id', async (req, res) => {
     api = '查询指定用户的购物车详情信息'
     console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('body=', req.body);
 
     let info = {};
 
@@ -91,7 +92,7 @@ Router.get('/cartinfo/:user_id', async (req, res) => {
                 flag: true,
                 result: prms
             }
-            console.log(prms);
+            // console.log(prms);
         }
         res.send(info);
     } catch (err) {
@@ -109,6 +110,8 @@ Router.get('/cartinfo/:user_id', async (req, res) => {
 Router.put('/cartinfo', async (req, res) => {
     api = '修改购物车信息'
     console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('body=', req.body);
 
     let info = {};
 

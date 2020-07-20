@@ -23,7 +23,8 @@ let api;
 Router.post('/goodinfo', async (req, res) => {
     api = '添加商品接口'
     console.log(`<----------${api}---------->`);
-    console.log('good_info', { ...req.body });
+    console.log('params=', req.params);
+    console.log('body=', req.body);
 
     // 数据库处理
     let sql = `INSERT INTO goodsinfo 
@@ -32,17 +33,13 @@ Router.post('/goodinfo', async (req, res) => {
                     good_size,
                     good_price,
                     good_img,
-                    good_num,
-                    good_stock,
-                    good_discount) VALUES
+                    good_stock,) VALUES
                 (${req.body.good_id},
                 '${req.body.good_name}',
                 '${req.body.good_size}',
                 ${req.body.good_price},
                 '${req.body.good_img}',
-                ${req.body.good_num},
-                ${req.body.good_stock},
-                ${req.body.good_discount});`;
+                ${req.body.good_stock},);`;
     let info = {};
     try {
         let result = await query(sql);//[{},{}]
@@ -56,7 +53,7 @@ Router.post('/goodinfo', async (req, res) => {
         }
         res.send(info);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         info = {
             api,
             code: err.errno,
@@ -71,6 +68,8 @@ Router.post('/goodinfo', async (req, res) => {
 Router.get('/goodinfo/:good_id', async (req, res) => {
     api = '查询单个商品接口'
     console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('body=', req.body);
 
     let info = {};
 
@@ -96,7 +95,7 @@ Router.get('/goodinfo/:good_id', async (req, res) => {
                 flag: true,
                 result: prms
             }
-            console.log(prms);
+            // console.log(prms);
         }
         res.send(info);
     } catch (err) {
@@ -114,6 +113,8 @@ Router.get('/goodinfo/:good_id', async (req, res) => {
 Router.get('/goodinfo', async (req, res) => {
     api = '查询所有商品接口'
     console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('body=', req.body);
 
     let info = {};
 
@@ -130,7 +131,7 @@ Router.get('/goodinfo', async (req, res) => {
                 flag: true,
                 result: prms
             }
-            console.log(prms);
+            // console.log(prms);
         }
         res.send(info);
     } catch (err) {
