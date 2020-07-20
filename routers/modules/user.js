@@ -19,7 +19,7 @@ Router.use(express.urlencoded());
 const query = require('../../databaseApi/MySQL/dbLink');
 
 // 注册前验证用户名     user_name
-Router.get('/uinfo/reg/:user_name', async (req, res) => {
+Router.get('/uinfo/regcheck/:user_name', async (req, res) => {
     console.log('<----------验证用户名---------->');
     // console.log('url=', req.url);
     // console.log('path=', req.path);
@@ -62,7 +62,7 @@ Router.get('/uinfo/reg/:user_name', async (req, res) => {
                 api: '用户注册接口',
                 msg: '数据库操作成功',
                 sqlOk: true,
-                regOrNot: result
+                result
             }
         }
         res.send(info);
@@ -77,9 +77,39 @@ Router.get('/uinfo/reg/:user_name', async (req, res) => {
     }
 })
 
-
 // 注册 post
+Router.post('/uinfo/reg', async (req, res) => {
+    console.log('<----------用户注册---------->');
+    console.log(req);
+    console.log('user_info=', req.body);
 
+    // 数据库处理
+
+    // let sql = `INSERT INTO userinfo (user_id,user_name,user_psw,user_token) VALUES (2,'czj1','123','123123');`;
+    let sql = `INSERT INTO userinfo (user_id,user_name,user_psw,user_token) 
+                VALUES (${req.body.user_id},'${req.body.user_name}','${req.body.user_psw}','${req.body.user_token}');`;
+    let info = {};
+    try {
+        let result = await query(sql);//[{},{}]
+
+        info = {
+            code: 2000,
+            api: '用户注册接口',
+            msg: '数据库操作成功',
+            sqlOk: true,
+            result: result.protocol41
+        }
+        res.send(info);
+    } catch (err) {
+        console.log(err);
+        info = {
+            code: err.errno,
+            msg: '操作失败：' + err.sqlMessage,
+            flag: false
+        }
+        res.send(info)
+    }
+})
 
 
 
@@ -112,7 +142,7 @@ Router.post('/uinfo/login', async (req, res) => {
             api: '用户登录接口',
             msg: '数据库操作成功',
             sqlOk: true,
-            regOrNot: result
+            result
         }
         res.send(info);
     } catch (err) {
