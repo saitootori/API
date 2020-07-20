@@ -79,7 +79,7 @@ Router.get('/cartinfo/:user_id', async (req, res) => {
     }
 
     // 数据库处理
-    let sql = `SELECT * FROM goodsinfo WHERE user_id = ${uid}`;
+    let sql = `SELECT * FROM cartinfo WHERE user_id = ${uid}`;
 
     try {
         let prms = await query(sql);
@@ -105,6 +105,38 @@ Router.get('/cartinfo/:user_id', async (req, res) => {
     }
 })
 
+// 修改购物车商品数量
+Router.put('/cartinfo', async (req, res) => {
+    api = '修改购物车信息'
+    console.log(`<----------${api}---------->`);
 
+    let info = {};
+
+    console.log(req.body);
+
+    // 数据库处理
+    // let sql = `SELECT * FROM cartinfo WHERE user_id = ${req.body.user_id} and good_id = ${req.body.good_id}`;
+    //          UPDATE cartinfo SET good_num = 12 WHERE user_id = 1 and good_id= 3 ; 
+    let sql = `UPDATE cartinfo SET good_num = ${req.body.good_num} WHERE user_id = ${req.body.user_id} and good_id = ${req.body.good_id} ; `
+
+    try {
+        await query(sql);
+        info = {
+            api,
+            code: 2000,
+            msg: "操作执行成功",
+            flag: true,
+        }
+        res.send(info);
+    } catch (err) {
+        info = {
+            api,
+            code: err.errno,
+            msg: '操作失败：' + err.sqlMessage,
+            flag: false
+        }
+        res.send(info)
+    }
+})
 
 module.exports = Router;
