@@ -1,3 +1,10 @@
+/*
+    商品API
+        功能：
+            增商品
+            查商品(单个)
+            查商品(所有)
+*/
 
 // 引入
 const express = require('express');
@@ -102,5 +109,40 @@ Router.get('/goodinfo/:good_id', async (req, res) => {
         res.send(info)
     }
 })
+
+// 查询所有商品详情信息
+Router.get('/goodinfo', async (req, res) => {
+    api = '查询所有商品接口'
+    console.log(`<----------${api}---------->`);
+
+    let info = {};
+
+    // 数据库处理
+    let sql = `SELECT * FROM goodsinfo`;
+
+    try {
+        let prms = await query(sql);
+        if (prms.length > 0) {
+            info = {
+                api,
+                code: 2000,
+                msg: "操作执行成功",
+                flag: true,
+                result: prms
+            }
+            console.log(prms);
+        }
+        res.send(info);
+    } catch (err) {
+        info = {
+            api,
+            code: err.errno,
+            msg: '操作失败：' + err.sqlMessage,
+            flag: false
+        }
+        res.send(info)
+    }
+})
+
 
 module.exports = Router;

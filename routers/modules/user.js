@@ -18,10 +18,9 @@ Router.use(express.urlencoded());
 // 引入封装的数据库
 const query = require('../../databaseApi/MySQL/dbLink');
 
-
 let api;
 
-// 注册前验证用户名     user_name
+// 注册前验证用户名
 Router.get('/uinfo/regcheck/:user_name', async (req, res) => {
     api = '验证用户名接口'
     console.log(`<----------${api}---------->`);
@@ -148,7 +147,7 @@ Router.post('/uinfo/login', async (req, res) => {
             code: 2000,
             msg: '数据库操作成功',
             sqlOk: true,
-            result
+            result: '密码判定为:' + result
         }
         res.send(info);
     } catch (err) {

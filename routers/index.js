@@ -5,6 +5,7 @@
 // 引入
 const express = require('express');
 // const getbody = require('body-parser');
+
 // 创建实例
 const Router = express.Router();
 
@@ -19,6 +20,7 @@ const cartRouter = require('./modules/cart')
 Router.use('/user', userRouter);
 Router.use('/goods', goodsRouter);
 Router.use('/cart', cartRouter);
+
 
 // 统一设置中间件,对请求的参数进行处理放到request.body
 Router.use(express.urlencoded());
