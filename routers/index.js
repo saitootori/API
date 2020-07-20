@@ -4,6 +4,7 @@
 
 // 引入
 const express = require('express');
+// const getbody = require('body-parser');
 // 创建实例
 const Router = express.Router();
 
@@ -21,6 +22,9 @@ Router.use('/cart', cartRouter);
 
 // 统一设置中间件,对请求的参数进行处理放到request.body
 Router.use(express.urlencoded());
+// Router.use(getbody.json());
+// Router.use(getbody.urlencoded({ extended: false }));
+
 
 
 // 自定义中间件,use接收所有请求

@@ -4,6 +4,7 @@
   "description": "* 完成路由以及数据库基本操作(增删改查)",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
     "mysql": "^2.18.1",

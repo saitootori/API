@@ -9,7 +9,7 @@ const conn = mysql.createPool({
     user: 'root',               //账号
     password: 'root',           //密码
     port: 3306,                 //mysql默认端口
-    database: 'mydb2001',       //数据库名字
+    database: 'mlwdb',       //数据库名字
     multipleStatements: true    //允许同时执行多条sql语句
 });
 
