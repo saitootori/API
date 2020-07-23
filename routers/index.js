@@ -17,9 +17,11 @@ const userRouter = require('./modules/user')
 const goodsRouter = require('./modules/goods')
 const cartRouter = require('./modules/cart')
 const manberRouter = require('./modules/manber')
+const goodRouter = require('./modules/goodsrouter')
 // 启用子路由
 Router.use('/user', userRouter);
 Router.use('/goods', goodsRouter);
+Router.use('/good', goodRouter);
 Router.use('/cart', cartRouter);
 Router.use('/manber', manberRouter);
 
