@@ -16,10 +16,12 @@ const query = require('../databaseApi/mySQL/dbLink');
 const userRouter = require('./modules/user')
 const goodsRouter = require('./modules/goods')
 const cartRouter = require('./modules/cart')
+const manberRouter = require('./modules/manber')
 // 启用子路由
 Router.use('/user', userRouter);
 Router.use('/goods', goodsRouter);
 Router.use('/cart', cartRouter);
+Router.use('/manber', manberRouter);
 
 
 // 统一设置中间件,对请求的参数进行处理放到request.body
