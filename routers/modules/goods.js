@@ -16,6 +16,7 @@ const query = require('../../databaseApi/MySQL/dbLink');
 
 // 设置中间件   需要在子路由里单独设置
 Router.use(express.urlencoded());
+Router.use(express.json());
 
 let api;
 
@@ -33,13 +34,13 @@ Router.post('/goodinfo', async (req, res) => {
                     good_size,
                     good_price,
                     good_img,
-                    good_stock,) VALUES
+                    good_stock) VALUES
                 (${req.body.good_id},
                 '${req.body.good_name}',
                 '${req.body.good_size}',
                 ${req.body.good_price},
                 '${req.body.good_img}',
-                ${req.body.good_stock},);`;
+                ${req.body.good_stock});`;
     let info = {};
     try {
         let result = await query(sql);//[{},{}]
