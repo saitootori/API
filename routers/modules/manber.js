@@ -119,27 +119,28 @@ Router.post('/manberinfo/reg', async (req, res) => {
     }
 })
 
-// 员工登录 post    √
-Router.post('/manberinfo/login', async (req, res) => {
-    api = '员工登录接口'
+// 管理员登录 post    √
+Router.post('/admininfo/login', async (req, res) => {
+    api = '管理员登录接口'
     console.log(`<----------${api}---------->`);
     console.log('params=', req.params);
     console.log('body=', req.body);
 
     // 数据库处理
-    let sql = `SELECT * FROM manberinfo WHERE manber_user_name = '${req.body.manber_user_name}'`;
+    let sql = `SELECT * FROM admininfo WHERE admin_username = '${req.body.admin_username}'`;
     let info = {};
     let result = false;
     try {
         let prms = await query(sql);//[{},{}]
         // console.log(prms[0].user_name);
         // console.log(prms[0].user_psw);
+        console.log(prms);
 
-        // 判断数据库里有没有这个员工
+        // 判断数据库里有没有这个管理员
         if (prms.length) {
             // 有，判断密码
-            console.log('员工存在');
-            if (req.body.manber_user_name == prms[0].manber_user_name && req.body.manber_user_psw == prms[0].manber_user_psw) {
+            console.log('管理员存在');
+            if (req.body.admin_username == prms[0].admin_username && req.body.admin_psw == prms[0].admin_psw) {
                 result = true;
             }
         }
@@ -148,7 +149,7 @@ Router.post('/manberinfo/login', async (req, res) => {
             code: 2000,
             msg: '数据库操作成功',
             sqlOk: true,
-            result: '密码判定为:' + result
+            result: result
         }
         res.send(info);
     } catch (err) {
@@ -277,6 +278,56 @@ Router.put('/manberinfo/personal', async (req, res) => {
             }
             res.send(info);
         }
+    } catch (err) {
+        info = {
+            api,
+            code: err.errno,
+            text: '操作失败：' + err.sqlMessage,
+            flag: false
+        }
+        res.send(info)
+    }
+})
+
+// 删除员工
+Router.delete('/manberinfo/personal', async (req, res) => {
+    api = '删除个人信息接口'
+    console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('query=', req.query);
+    console.log('body=', req.body);
+
+    let info = {};
+
+    let uid;
+    if (req.params.manber_id) {
+        uid = req.params.manber_id
+    } else if (req.body.manber_id) {
+        uid = req.body.manber_id
+    } else if (req.query.manber_id) {
+        uid = req.query.manber_id
+    } else {
+
+    }
+
+    console.log(uid);
+
+    // 数据库处理
+    let sql = `DELETE FROM manberinfo WHERE manber_id= ${uid}`;
+
+    try {
+        let prms = await query(sql);
+        if (prms.length > 0) {
+            info = {
+                api,
+                code: 2000,
+                text: "操作执行成功",
+                flag: true,
+                result: prms
+            }
+            // console.log(prms);
+        }
+        res.send(info);
     } catch (err) {
         info = {
             api,

@@ -146,5 +146,54 @@ Router.get('/goodinfo', async (req, res) => {
     }
 })
 
+// 删除商品
+Router.delete('/goodinfo', async (req, res) => {
+    api = '删除商品接口'
+    console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('query=', req.query);
+    console.log('body=', req.body);
+
+    let info = {};
+
+    let gid;
+    if (req.params.good_id) {
+        gid = req.params.good_id
+    } else if (req.body.good_id) {
+        gid = req.body.good_id
+    } else if (req.query.good_id) {
+        gid = req.query.good_id
+    } else {
+
+    }
+
+    console.log(gid);
+
+    // 数据库处理
+    let sql = `DELETE FROM goodsinfo WHERE good_id= ${gid}`;
+
+    try {
+        let prms = await query(sql);
+        if (prms.length > 0) {
+            info = {
+                api,
+                code: 2000,
+                text: "操作执行成功",
+                flag: true,
+                result: prms
+            }
+            // console.log(prms);
+        }
+        res.send(info);
+    } catch (err) {
+        info = {
+            api,
+            code: err.errno,
+            text: '操作失败：' + err.sqlMessage,
+            flag: false
+        }
+        res.send(info)
+    }
+})
 
 module.exports = Router;
