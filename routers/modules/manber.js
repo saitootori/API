@@ -119,51 +119,6 @@ Router.post('/manberinfo/reg', async (req, res) => {
     }
 })
 
-// 管理员登录 post    √
-Router.post('/admininfo/login', async (req, res) => {
-    api = '管理员登录接口'
-    console.log(`<----------${api}---------->`);
-    console.log('params=', req.params);
-    console.log('body=', req.body);
-
-    // 数据库处理
-    let sql = `SELECT * FROM admininfo WHERE admin_username = '${req.body.admin_username}'`;
-    let info = {};
-    let result = false;
-    try {
-        let prms = await query(sql);//[{},{}]
-        // console.log(prms[0].user_name);
-        // console.log(prms[0].user_psw);
-        console.log(prms);
-
-        // 判断数据库里有没有这个管理员
-        if (prms.length) {
-            // 有，判断密码
-            console.log('管理员存在');
-            if (req.body.admin_username == prms[0].admin_username && req.body.admin_psw == prms[0].admin_psw) {
-                result = true;
-            }
-        }
-        info = {
-            api,
-            code: 2000,
-            msg: '数据库操作成功',
-            sqlOk: true,
-            result: result
-        }
-        res.send(info);
-    } catch (err) {
-        // console.log(err);
-        info = {
-            api,
-            code: err.errno,
-            msg: '操作失败：' + err.sqlMessage,
-            flag: false
-        }
-        res.send(info)
-    }
-})
-
 // 获取员工数据     √
 Router.get('/manberinfo/personal/:manber_id', async (req, res) => {
     api = '个人信息接口'
@@ -333,6 +288,139 @@ Router.delete('/manberinfo/personal', async (req, res) => {
             api,
             code: err.errno,
             text: '操作失败：' + err.sqlMessage,
+            flag: false
+        }
+        res.send(info)
+    }
+})
+
+
+
+// 后台系统管理员部分
+// 管理员登录 post    √
+Router.post('/admininfo/login', async (req, res) => {
+    api = '管理员登录接口'
+    console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('body=', req.body);
+
+    // 数据库处理
+    let sql = `SELECT * FROM admininfo WHERE admin_username = '${req.body.admin_username}'`;
+    let info = {};
+    let result = false;
+    try {
+        let prms = await query(sql);//[{},{}]
+        // console.log(prms[0].user_name);
+        // console.log(prms[0].user_psw);
+        console.log(prms);
+
+        // 判断数据库里有没有这个管理员
+        if (prms.length) {
+            // 有，判断密码
+            console.log('管理员存在');
+            if (req.body.admin_username == prms[0].admin_username && req.body.admin_psw == prms[0].admin_psw) {
+                result = true;
+            }
+        }
+        info = {
+            api,
+            code: 2000,
+            msg: '数据库操作成功',
+            sqlOk: true,
+            result: result
+        }
+        res.send(info);
+    } catch (err) {
+        // console.log(err);
+        info = {
+            api,
+            code: err.errno,
+            msg: '操作失败：' + err.sqlMessage,
+            flag: false
+        }
+        res.send(info)
+    }
+})
+
+// 获取管理员数据   √
+Router.get('/admininfo', async (req, res) => {
+    api = '管理员注册验证接口'
+    console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('body=', req.body);
+
+    // 数据库处理
+    let sql = `SELECT * FROM admininfo`;
+    let info = {};
+    // let result = false;
+
+    try {
+        let prms = await query(sql);//[{},{}]
+        // console.log(prms[0].user_name);
+        // console.log(prms[0].user_psw);
+        console.log(prms);
+
+        info = {
+            api,
+            code: 2000,
+            msg: '数据库操作成功',
+            sqlOk: true,
+            result: prms
+        }
+        res.send(info);
+
+
+    } catch (err) {
+        // console.log(err);
+        info = {
+            api,
+            code: err.errno,
+            msg: '操作失败：' + err.sqlMessage,
+            flag: false
+        }
+        res.send(info)
+    }
+})
+
+// 管理员注册       √
+Router.post('/admininfo/reg', async (req, res) => {
+    api = '管理员注册接口'
+    console.log(`<----------${api}---------->`);
+    console.log('params=', req.params);
+    console.log('body=', req.body);
+
+    // 数据库处理
+    // let sql = `SELECT * FROM admininfo`;
+    let sql = `INSERT INTO admininfo (
+            admin_id,admin_username,admin_name,admin_psw)
+    VALUES (${req.body.admin_id},'${req.body.admin_username}',
+            '${req.body.admin_name}','${req.body.admin_psw}')`;
+    let info = {};
+    let result = false;
+
+    try {
+        if (req.body.admin_username !== '') {
+            let prms = await query(sql);//[{},{}]
+            // console.log(prms[0].user_name);
+            // console.log(prms[0].user_psw);
+            console.log(prms);
+
+            info = {
+                api,
+                code: 2000,
+                msg: '数据库操作成功',
+                sqlOk: true,
+                result: true
+            }
+            res.send(info);
+        }
+
+    } catch (err) {
+        // console.log(err);
+        info = {
+            api,
+            code: err.errno,
+            msg: '操作失败：用户名为空或用户名重复了',
             flag: false
         }
         res.send(info)
